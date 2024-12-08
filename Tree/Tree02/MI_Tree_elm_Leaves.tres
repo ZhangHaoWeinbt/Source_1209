@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://hqwnpwdrya54"]
+
+[ext_resource type="Shader" uid="uid://csl8el7kvogev" path="res://Tree/Tree02/MF_Tree_elm_Leaves.tres" id="1_l7dhi"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_l7dhi")
+shader_parameter/Des = Color(0.901961, 0.901961, 0.901961, 1)
+shader_parameter/color = Color(0.701961, 0.701961, 0.701961, 1)
+shader_parameter/Metallic = Color(0.08469, 0.08469, 0.08469, 1)
+shader_parameter/Roughness = Color(0.597176, 0.597176, 0.597176, 1)
+shader_parameter/Specular = Color(0.295867, 0.295866, 0.295866, 1)
+shader_parameter/BakeLight = Color(0.858824, 0.909804, 0.709804, 1)
