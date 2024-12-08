@@ -1,0 +1,213 @@
+[gd_resource type="VisualShader" load_steps=18 format=3 uid="uid://c52ru6rqyex2u"]
+
+[ext_resource type="Texture2D" uid="uid://y3xjeqt0p5kb" path="res://Tree/Tree04/acacia_leaf.PNG" id="2_1r6k6"]
+[ext_resource type="Texture2D" uid="uid://bry1yrbsijv74" path="res://Tree/Tree04/acacia_leaf_normal.PNG" id="3_fimt5"]
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_1f6ld"]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, Vector3(0.5, 0.5, 0.5)]
+op_type = 3
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_nkd7i"]
+parameter_name = "Des"
+default_value_enabled = true
+default_value = Color(0.808998, 0.808998, 0.808998, 1)
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_wjq3l"]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(2, 2, 2)]
+operator = 2
+
+[sub_resource type="VisualShaderNodeIf" id="VisualShaderNodeIf_i5uwe"]
+default_input_values = [0, 0.0, 1, 0.2, 2, 1e-05, 3, Vector3(0, 0, 0), 4, Vector3(0, 0, 0), 5, Vector3(0, 0, 0)]
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_sgxtp"]
+constant = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_xbpmf"]
+output_port_for_preview = 4
+expanded_output_ports = [0]
+texture = ExtResource("2_1r6k6")
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_upokj"]
+parameter_name = "color"
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_7qsby"]
+output_port_for_preview = 0
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(0.1, 0.1, 0.1)]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_e1jrl"]
+expanded_output_ports = [0]
+texture = ExtResource("3_fimt5")
+texture_type = 2
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_pewks"]
+parameter_name = "BakeLight"
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_875o0"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_fntmi"]
+parameter_name = "Specular"
+default_value_enabled = true
+default_value = Color(0.295867, 0.295866, 0.295866, 1)
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_mnd7h"]
+parameter_name = "Roughness"
+default_value_enabled = true
+default_value = Color(0.597176, 0.597176, 0.597176, 1)
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_e8qqk"]
+parameter_name = "Metallic"
+default_value_enabled = true
+default_value = Color(0.0846899, 0.0846899, 0.0846899, 1)
+
+[sub_resource type="VisualShaderNodeColorFunc" id="VisualShaderNodeColorFunc_k8sun"]
+output_port_for_preview = 0
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx, depth_prepass_alpha;
+
+uniform sampler2D tex_frg_2 : source_color;
+uniform vec4 Des : source_color = vec4(0.808998, 0.808998, 0.808998, 1.000000);
+uniform vec4 color : source_color = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+uniform vec4 Metallic : source_color = vec4(0.084690, 0.084690, 0.084690, 1.000000);
+uniform vec4 Roughness : source_color = vec4(0.597176, 0.597176, 0.597176, 1.000000);
+uniform vec4 Specular : source_color = vec4(0.295867, 0.295866, 0.295866, 1.000000);
+uniform sampler2D tex_frg_3 : hint_normal;
+uniform vec4 BakeLight : source_color = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+
+
+
+void fragment() {
+// Texture2D:2
+	vec4 n_out2p0 = texture(tex_frg_2, UV);
+	float n_out2p4 = n_out2p0.a;
+
+
+	vec3 n_out9p0;
+// ColorFunc:9
+	{
+		vec3 c = vec3(n_out2p0.xyz);
+		float max1 = max(c.r, c.g);
+		float max2 = max(max1, c.b);
+		n_out9p0 = vec3(max2, max2, max2);
+	}
+
+
+// ColorParameter:11
+	vec4 n_out11p0 = Des;
+
+
+// Mix:10
+	vec3 n_out10p0 = mix(n_out9p0, vec3(n_out2p0.xyz), vec3(n_out11p0.xyz));
+
+
+// ColorParameter:27
+	vec4 n_out27p0 = color;
+
+
+// VectorOp:28
+	vec3 n_out28p0 = n_out10p0 * vec3(n_out27p0.xyz);
+
+
+// ColorConstant:14
+	vec4 n_out14p0 = vec4(0.200000, 0.200000, 0.200000, 1.000000);
+
+
+	vec3 n_out13p0;
+// If:13
+	float n_in13p2 = 0.00001;
+	vec3 n_in13p5 = vec3(0.00000, 0.00000, 0.00000);
+	if(abs(n_out2p4 - n_out14p0.x) < n_in13p2)
+	{
+		n_out13p0 = vec3(n_out2p4);
+	}
+	else if(n_out2p4 < n_out14p0.x)
+	{
+		n_out13p0 = n_in13p5;
+	}
+	else
+	{
+		n_out13p0 = vec3(n_out2p4);
+	}
+
+
+// ColorParameter:8
+	vec4 n_out8p0 = Metallic;
+
+
+// ColorParameter:7
+	vec4 n_out7p0 = Roughness;
+
+
+// ColorParameter:6
+	vec4 n_out6p0 = Specular;
+
+
+// Texture2D:3
+	vec4 n_out3p0 = texture(tex_frg_3, UV);
+
+
+// VectorOp:12
+	vec3 n_in12p1 = vec3(2.00000, 2.00000, 2.00000);
+	vec3 n_out12p0 = vec3(n_out2p0.xyz) * n_in12p1;
+
+
+// ColorParameter:4
+	vec4 n_out4p0 = BakeLight;
+
+
+// VectorOp:5
+	vec3 n_out5p0 = n_out12p0 * vec3(n_out4p0.xyz);
+
+
+// Output:0
+	ALBEDO = n_out28p0;
+	ALPHA = n_out13p0.x;
+	METALLIC = n_out8p0.x;
+	ROUGHNESS = n_out7p0.x;
+	SPECULAR = n_out6p0.x;
+	NORMAL_MAP = vec3(n_out3p0.xyz);
+	BACKLIGHT = n_out5p0;
+
+
+}
+"
+graph_offset = Vector2(-1446.63, -340.132)
+modes/cull = 2
+flags/depth_prepass_alpha = true
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_xbpmf")
+nodes/fragment/2/position = Vector2(-1060, -360)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_e1jrl")
+nodes/fragment/3/position = Vector2(-340, 840)
+nodes/fragment/4/node = SubResource("VisualShaderNodeColorParameter_pewks")
+nodes/fragment/4/position = Vector2(-1000, 620)
+nodes/fragment/5/node = SubResource("VisualShaderNodeVectorOp_875o0")
+nodes/fragment/5/position = Vector2(-280, 660)
+nodes/fragment/6/node = SubResource("VisualShaderNodeColorParameter_fntmi")
+nodes/fragment/6/position = Vector2(-320, 440)
+nodes/fragment/7/node = SubResource("VisualShaderNodeColorParameter_mnd7h")
+nodes/fragment/7/position = Vector2(-320, 280)
+nodes/fragment/8/node = SubResource("VisualShaderNodeColorParameter_e8qqk")
+nodes/fragment/8/position = Vector2(-320, 100)
+nodes/fragment/9/node = SubResource("VisualShaderNodeColorFunc_k8sun")
+nodes/fragment/9/position = Vector2(-680, -480)
+nodes/fragment/10/node = SubResource("VisualShaderNodeMix_1f6ld")
+nodes/fragment/10/position = Vector2(-320, -340)
+nodes/fragment/11/node = SubResource("VisualShaderNodeColorParameter_nkd7i")
+nodes/fragment/11/position = Vector2(-700, -220)
+nodes/fragment/12/node = SubResource("VisualShaderNodeVectorOp_wjq3l")
+nodes/fragment/12/position = Vector2(-580, 520)
+nodes/fragment/13/node = SubResource("VisualShaderNodeIf_i5uwe")
+nodes/fragment/13/position = Vector2(-700, 100)
+nodes/fragment/14/node = SubResource("VisualShaderNodeColorConstant_sgxtp")
+nodes/fragment/14/position = Vector2(-1180, 260)
+nodes/fragment/27/node = SubResource("VisualShaderNodeColorParameter_upokj")
+nodes/fragment/27/position = Vector2(-300, -120)
+nodes/fragment/28/node = SubResource("VisualShaderNodeVectorOp_7qsby")
+nodes/fragment/28/position = Vector2(31.9401, -301.797)
+nodes/fragment/connections = PackedInt32Array(3, 0, 0, 9, 4, 0, 5, 1, 5, 0, 0, 18, 6, 0, 0, 4, 7, 0, 0, 3, 8, 0, 0, 2, 9, 0, 10, 0, 2, 0, 10, 1, 11, 0, 10, 2, 2, 0, 12, 0, 12, 0, 5, 0, 2, 4, 13, 0, 14, 0, 13, 1, 2, 4, 13, 4, 2, 4, 13, 3, 13, 0, 0, 1, 10, 0, 28, 0, 27, 0, 28, 1, 28, 0, 0, 0, 2, 0, 9, 0)

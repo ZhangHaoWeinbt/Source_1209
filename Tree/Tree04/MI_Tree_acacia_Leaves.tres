@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b4km70sky5n48"]
+
+[ext_resource type="Shader" uid="uid://c52ru6rqyex2u" path="res://Tree/Tree04/MF_Tree_acacia_Leaves.tres" id="1_hbc7a"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_hbc7a")
+shader_parameter/Des = Color(0.913725, 0.913725, 0.913725, 1)
+shader_parameter/color = Color(0.921569, 0.921569, 0.921569, 1)
+shader_parameter/Metallic = Color(0.08469, 0.08469, 0.08469, 1)
+shader_parameter/Roughness = Color(0.597176, 0.597176, 0.597176, 1)
+shader_parameter/Specular = Color(0.295867, 0.295866, 0.295866, 1)
+shader_parameter/BakeLight = Color(0.823529, 0.823529, 0.823529, 1)
