@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://df7jsntfimio8"]
+
+[ext_resource type="Shader" uid="uid://ceifj65t7g35b" path="res://Tree/Tree05/MF_Tree_spruce_Leaves.tres" id="1_tymtc"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_tymtc")
+shader_parameter/Des = Color(0.901961, 0.901961, 0.901961, 1)
+shader_parameter/color = Color(0.956863, 0.956863, 0.956863, 1)
+shader_parameter/Metallic = Color(0.08469, 0.08469, 0.08469, 1)
+shader_parameter/Roughness = Color(0.597176, 0.597176, 0.597176, 1)
+shader_parameter/Specular = Color(0.295867, 0.295866, 0.295866, 1)
+shader_parameter/BakeLight = Color(0.847059, 0.847059, 0.847059, 1)
